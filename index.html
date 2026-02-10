@@ -1184,12 +1184,21 @@
         }
         function populateManualTypes() { const types = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value).map(d => d.type))].sort(); elements.mType.innerHTML = '<option value="">選択</option>' + types.map(t => `<option value="${t}">${t}</option>`).join(''); elements.mDiam.disabled = true; }
         function populateManualDiameters() {
+            const currentDiam = elements.mDiam.value;
             const diams = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value && d.type === elements.mType.value).map(d => d.diameter))];
             elements.mDiam.innerHTML = '<option value="">選択</option>' + diams.map(d => {
                 const label = String(d).includes('x') ? d : `φ${d}`;
                 return `<option value="${d}">${label}</option>`;
             }).join('');
             elements.mDiam.disabled = false;
+            // Restore previous diameter if it exists in the new list
+            if (currentDiam && diams.includes(isNaN(currentDiam) ? currentDiam : Number(currentDiam))) {
+                elements.mDiam.value = currentDiam;
+                // Trigger auto-select if all values are set
+                if (elements.mStd.value && elements.mType.value && elements.mDiam.value) {
+                    selectItem(pipeData.find(d => d.standard == elements.mStd.value && d.type == elements.mType.value && d.diameter == elements.mDiam.value));
+                }
+            }
         }
         function selectItem(data) {
             if (!data) return;
