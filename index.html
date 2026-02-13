@@ -1126,7 +1126,12 @@
         function init() {
             elements.sInput.oninput = handleSearch; elements.sInput.onfocus = handleSearch;
             elements.mStd.onchange = populateManualTypes; elements.mType.onchange = populateManualDiameters;
-            elements.mDiam.onchange = () => { if (elements.mStd.value && elements.mType.value && elements.mDiam.value) selectItem(pipeData.find(d => d.standard == elements.mStd.value && d.type == elements.mType.value && d.diameter == elements.mDiam.value)); };
+            elements.mDiam.onchange = () => {
+                const std = elements.mStd.value, cleanT = elements.mType.value, diam = elements.mDiam.value;
+                if (std && cleanT && diam) {
+                    selectItem(pipeData.find(d => d.standard == std && getCleanTypeName(d.type) == cleanT && String(d.diameter) == diam));
+                }
+            };
             // Global click to handle deselection more reliably
             document.addEventListener('click', e => {
                 if (!elements.sInput.contains(e.target)) elements.sList.style.display = 'none';
@@ -1248,7 +1253,7 @@
             if (currentDiam && diams.includes(isNaN(currentDiam) ? currentDiam : Number(currentDiam))) {
                 elements.mDiam.value = currentDiam;
                 if (std && cleanType && elements.mDiam.value) {
-                    selectItem(pipeData.find(d => d.standard == std && getCleanTypeName(d.type) == cleanType && d.diameter == elements.mDiam.value));
+                    selectItem(pipeData.find(d => d.standard == std && getCleanTypeName(d.type) == cleanType && String(d.diameter) == elements.mDiam.value));
                 }
             }
         }
