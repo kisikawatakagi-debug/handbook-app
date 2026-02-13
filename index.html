@@ -968,6 +968,24 @@
             { "standard": "K", "type": "45度曲管", "diameter": 250, "L1": 294, "L2": 449, "l": 716, "search": ["kyoku", "mag"] },
             { "standard": "K", "type": "45度曲管", "diameter": 300, "L1": 337, "L2": 490, "l": 797, "search": ["kyoku", "mag"] },
             { "standard": "K", "type": "45度曲管", "diameter": 400, "L1": 423, "L2": 573, "l": 957, "search": ["kyoku", "mag"] },
+            // K 22 1/2 (JWWA B 114)
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 75, "L1": 201, "L2": 309, "l": 506, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 100, "L1": 201, "L2": 309, "l": 506, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 150, "L1": 240, "L2": 349, "l": 584, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 200, "L1": 282, "L2": 389, "l": 665, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 250, "L1": 284, "L2": 389, "l": 666, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 300, "L1": 325, "L2": 429, "l": 747, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 350, "L1": 367, "L2": 468, "l": 827, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "22 1/2度曲管", "diameter": 400, "L1": 408, "L2": 558, "l": 957, "search": ["kyoku", "mag"] },
+            // K 11 1/4 (JWWA B 114)
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 75, "L1": 337, "L2": 446, "l": 781, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 100, "L1": 337, "L2": 446, "l": 781, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 150, "L1": 337, "L2": 446, "l": 781, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 200, "L1": 437, "L2": 544, "l": 979, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 250, "L1": 439, "L2": 544, "l": 980, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 300, "L1": 441, "L2": 544, "l": 982, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 350, "L1": 541, "L2": 643, "l": 1180, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "11 1/4度曲管", "diameter": 400, "L1": 543, "L2": 693, "l": 1250, "search": ["kyoku", "mag"] },
             // K受不断水割丁字管
             { "standard": "K", "type": "K受不断水割丁字管", "diameter": "75x75", "S": 273.5, "L1": 273.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
             { "standard": "K", "type": "K受不断水割丁字管", "diameter": "100x75", "S": 290.5, "L1": 290.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
@@ -1156,17 +1174,12 @@
 
         // Helper to format display name for Tee and other items
         function getDisplayName(d) {
-            let name = d.type;
-            const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
+            let name = d.type.replace(/\(.*\)/, '').trim();
+            name = name.replace(/\s?\d+x\d+$/, '').trim();
 
-            // For Tee: Unify display notation (remove (主管)/(枝管) and format diameter)
-            if (name.includes('二受丁字管')) {
-                const cleanType = '二受丁字管';
-                if (String(d.diameter).includes('x')) {
-                    const parts = d.diameter.split('x');
-                    return `${cleanType} φ${parts[0]}×φ${parts[1]}`;
-                }
-            }
+            const diaStr = String(d.diameter);
+            const dia = diaStr.includes('x') ?
+                `φ${diaStr.split('x')[0]}×φ${diaStr.split('x')[1]}` : `φ${d.diameter}`;
 
             return `${name} ${dia}`;
         }
