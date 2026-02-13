@@ -1173,14 +1173,17 @@
         }
 
         // Helper to format display name for Tee and other items
-        function getDisplayName(d) {
-            let name = d.type.replace(/\(.*\)/, '').trim();
-            name = name.replace(/\s?\d+x\d+$/, '').trim();
+        function getCleanTypeName(type) {
+            return type.replace(/[（\(].*?[）\)]/g, '').replace(/\s?\d+x\d+$/, '').trim();
+        }
 
+        function getDisplayName(d) {
+            const name = getCleanTypeName(d.type);
             const diaStr = String(d.diameter);
             const dia = diaStr.includes('x') ?
                 `φ${diaStr.split('x')[0]}×φ${diaStr.split('x')[1]}` : `φ${d.diameter}`;
 
+            if (!d.diameter) return name;
             return `${name} ${dia}`;
         }
 
@@ -1189,10 +1192,14 @@
             const q = elements.sInput.value.toLowerCase().replace(/\s/g, '');
             if (!q) {
                 if (history.length > 0) {
+                    const seenH = new Set();
                     elements.sList.innerHTML = history.map(d => {
+                        const dn = getDisplayName(d);
+                        if (seenH.has(dn)) return '';
+                        seenH.add(dn);
                         return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'>
                             <span class="res-tag" style="background:#f1f5f9; color:#64748b;">履歴</span>
-                            <span class="res-main">${getDisplayName(d)}</span>
+                            <span class="res-main">${dn}</span>
                         </div>`;
                     }).join('');
                     elements.sList.style.display = 'block';
@@ -1206,26 +1213,42 @@
                 const tags = (d.search || []).join('').toLowerCase();
                 return names.includes(q) || tags.includes(q);
             });
-            elements.sList.innerHTML = m.map(d => {
-                return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'><span class="res-tag">${d.standard || ''}</span><span class="res-main">${getDisplayName(d)}</span></div>`;
+            const seenS = new Set();
+            elements.sList.innerHTML = m.slice(0, 40).map(d => {
+                const dn = getDisplayName(d);
+                if (seenS.has(dn)) return '';
+                seenS.add(dn);
+                return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'>
+                    <span class="res-tag">${d.standard || ''}</span>
+                    <span class="res-main">${dn}</span>
+                </div>`;
             }).join('');
-            elements.sList.style.display = m.length ? 'block' : 'none';
+            elements.sList.style.display = seenS.size ? 'block' : 'none';
         }
-        function populateManualTypes() { const types = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value).map(d => d.type))].sort(); elements.mType.innerHTML = '<option value="">選択</option>' + types.map(t => `<option value="${t}">${t}</option>`).join(''); elements.mDiam.disabled = true; }
+        function populateManualTypes() {
+            const std = elements.mStd.value;
+            const items = pipeData.filter(d => d.standard === std);
+            const types = [...new Set(items.map(d => getCleanTypeName(d.type)))].sort();
+            elements.mType.innerHTML = '<option value="">選択</option>' +
+                types.map(t => `<option value="${t}">${t}</option>`).join('');
+            elements.mDiam.disabled = true;
+        }
         function populateManualDiameters() {
+            const std = elements.mStd.value;
+            const cleanType = elements.mType.value;
             const currentDiam = elements.mDiam.value;
-            const diams = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value && d.type === elements.mType.value).map(d => d.diameter))];
+            const items = pipeData.filter(d => d.standard === std && getCleanTypeName(d.type) === cleanType);
+            const diams = [...new Set(items.map(d => d.diameter))];
+
             elements.mDiam.innerHTML = '<option value="">選択</option>' + diams.map(d => {
-                const label = String(d).includes('x') ? d : `φ${d}`;
+                const label = String(d).includes('x') ? `φ${d.split('x')[0]}×φ${d.split('x')[1]}` : `φ${d}`;
                 return `<option value="${d}">${label}</option>`;
             }).join('');
             elements.mDiam.disabled = false;
-            // Restore previous diameter if it exists in the new list
             if (currentDiam && diams.includes(isNaN(currentDiam) ? currentDiam : Number(currentDiam))) {
                 elements.mDiam.value = currentDiam;
-                // Trigger auto-select if all values are set
-                if (elements.mStd.value && elements.mType.value && elements.mDiam.value) {
-                    selectItem(pipeData.find(d => d.standard == elements.mStd.value && d.type == elements.mType.value && d.diameter == elements.mDiam.value));
+                if (std && cleanType && elements.mDiam.value) {
+                    selectItem(pipeData.find(d => d.standard == std && getCleanTypeName(d.type) == cleanType && d.diameter == elements.mDiam.value));
                 }
             }
         }
