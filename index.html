@@ -943,15 +943,13 @@
             { "standard": "GX", "type": "帽", "diameter": 300, "L1": 150.0, "L2": 0, "l": 150.0, "search": ["bou", "cap"] },
             { "standard": "GX", "type": "帽", "diameter": 350, "L1": 150.0, "L2": 0, "l": 150.0, "search": ["bou", "cap"] },
             { "standard": "GX", "type": "帽", "diameter": 400, "L1": 152.0, "L2": 0, "l": 152.0, "search": ["bou", "cap"] },
-            // GX ソフトシール仕切弁(受挿し) L=有効長, L1=挿入長c, L2=全長A
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 75, "L1": 110, "L2": 600, "l": 490, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 100, "L1": 115, "L2": 605, "l": 490, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 150, "L1": 120, "L2": 670, "l": 550, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 200, "L1": 120, "L2": 730, "l": 610, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 250, "L1": 125, "L2": 715, "l": 590, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 300, "L1": 135, "L2": 835, "l": 700, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 350, "L1": 135, "L2": 895, "l": 760, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 400, "L1": 145, "L2": 949, "l": 804, "search": ["sof", "val", "ben"] },
+            // GX ソフトシール仕切弁(受挿し) L1:F1, L2:L3, l:L2(有効長)
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 75, "L1": 90, "L2": 400, "l": 490, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 100, "L1": 90, "L2": 400, "l": 490, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 150, "L1": 110, "L2": 440, "l": 550, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 200, "L1": 130, "L2": 480, "l": 610, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 250, "L1": 150, "L2": 530, "l": 680, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(受挿し)", "diameter": 300, "L1": 200, "L2": 500, "l": 700, "search": ["sof", "val", "ben"] },
             // GX ソフトシール仕切弁(両受)
             { "standard": "GX", "type": "ソフトシール仕切弁(両受)", "diameter": 350, "L1": 760, "L2": 460, "l": 760, "search": ["sof", "val", "ben"] },
             { "standard": "GX", "type": "ソフトシール仕切弁(両受)", "diameter": 400, "L1": 804, "L2": 500, "l": 804, "search": ["sof", "val", "ben"] },
@@ -1156,15 +1154,20 @@
             }
         }
 
-        // Helper to format display name for Tee
+        // Helper to format display name for Tee and other items
         function getDisplayName(d) {
             let name = d.type;
             const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
-            if (name.startsWith('二受丁字管') && (name.endsWith('(主管)') || name.endsWith('(枝管)'))) {
-                const parts = d.diameter.split('x');
-                name = `二受丁字管φ${parts[0]}×φ${parts[1]}`;
-                return name;
+
+            // For Tee: Unify display notation (remove (主管)/(枝管) and format diameter)
+            if (name.includes('二受丁字管')) {
+                const cleanType = '二受丁字管';
+                if (String(d.diameter).includes('x')) {
+                    const parts = d.diameter.split('x');
+                    return `${cleanType} φ${parts[0]}×φ${parts[1]}`;
+                }
             }
+
             return `${name} ${dia}`;
         }
 
@@ -1253,28 +1256,29 @@
             const isValve = isValveRY || isValveSI;
 
             document.getElementById('lbl_S').textContent = isFudan ? 'S1' : 'S寸法';
-            document.getElementById('lbl_L1').textContent = isSBend ? 'L' : (isValveRY ? 'L' : (isValveSI ? 'L' : 'L1'));
+            document.getElementById('lbl_L1').textContent = isSBend ? 'L' : (isValveRY ? 'L' : (isValveSI ? 'L1' : 'L1'));
             document.getElementById('lbl_L2').textContent = isValveRY ? 'L' : (isValveSI ? 'L2' : 'L2');
+            document.getElementById('lbl_l').textContent = isValveSI ? 'L' : (isValveRY ? 'L' : 'L3 (L1+L2の合計)');
             document.getElementById('note_S').textContent = isFudan ? '※S1=L1' : '※S=分岐管芯から有効長まで';
 
             // Special UI reduction for Soft Seal Valve
             if (isValveRY) {
                 set('val_L1', 0); // Hide L1
-                set('val_l', 0);  // Hide L3
+                set('val_L2', 0); // Hide L2
+                set('val_l', data.L2); // Use L2 as effective length L for RY
                 set('val_I', 0);
                 set('val_S', 0);
                 set('val_H', 0);
-                set('val_L2', data.L2); // Use L2 as L for Ryouke
-                document.getElementById('lbl_L2').textContent = 'L';
             } else if (isValveSI) {
-                set('val_L1', data.L1); // c
-                set('val_L2', data.L2); // A
-                set('val_l', data.l);   // L (有効長)
+                // For SI: Show L1, L2, L (from data.l)
+                set('val_L1', data.L1);
+                set('val_L2', data.L2);
+                set('val_l', data.l);
                 set('val_I', 0);
                 set('val_S', 0);
                 set('val_H', 0);
-                document.getElementById('lbl_L1').textContent = 'c';
-                document.getElementById('lbl_L2').textContent = 'A';
+                document.getElementById('lbl_L1').textContent = 'L1';
+                document.getElementById('lbl_L2').textContent = 'L2';
                 document.getElementById('lbl_l').textContent = 'L';
             }
             if (isFudan && (data.S === undefined || data.S === 0)) {

@@ -1,0 +1,1369 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逡ｰ蠖｢邂｡萓ｿ隕ｧ讀懃ｴ｢</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --background-start: #f3f4f6;
+            --background-end: #e5e7eb;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --calc-bg: #1e293b;
+            --calc-text: #f8fafc;
+            --calc-accent: #94a3b8;
+            --calc-memory: #64748b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            color: var(--text-main);
+            padding-bottom: 500px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            min-height: 550px;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            text-align: center;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Tabs */
+        .main-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .main-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .main-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .main-tab-content {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .main-tab-content.active {
+            display: flex;
+        }
+
+        /* Search */
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.5rem;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 2rem;
+            outline: none;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        #search-results-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            margin-top: 8px;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-result-item {
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .res-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 1px 6px;
+            border-radius: 99px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        /* Manual Select */
+        .manual-selection {
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+            color: var(--text-muted);
+        }
+
+        select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.4rem;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        /* Result Card */
+        .result-card {
+            margin-top: 1rem;
+            border-top: 2px dashed var(--border-color);
+            padding-top: 1rem;
+            display: none;
+        }
+
+        .result-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .btn-star {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .btn-star.active {
+            color: #fbbf24;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .dimension-item {
+            background: #fff;
+            padding: 0.85rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #f1f5f9;
+            transition: transform 0.1s;
+        }
+
+        .dimension-item:active {
+            transform: scale(0.95);
+            background: #eef2ff;
+        }
+
+        .dimension-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .note-text {
+            grid-column: span 2;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .list-entry {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 0.7rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* CALCULATOR WORKSPACE */
+        #calculator-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 500px;
+            background-color: var(--calc-bg);
+            color: var(--calc-text);
+            box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            border-top-left-radius: 1.25rem;
+            border-top-right-radius: 1.25rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #calculator-panel.minimized {
+            transform: translateY(455px);
+        }
+
+        .calc-header {
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .calc-workspace {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Left: Keypad & Memory */
+        .workspace-left {
+            display: flex;
+            flex-direction: column;
+            padding: 0.75rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .kp-display-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0.75rem;
+            text-align: right;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .formula-bar {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            min-height: 1.2rem;
+            font-family: monospace;
+        }
+
+        .main-display {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: monospace;
+            color: var(--calc-accent);
+        }
+
+        .memory-row {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .mem-slot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .mem-btn {
+            width: 100%;
+            padding: 6px 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px 4px 0 0;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .mem-btn .m-label {
+            opacity: 0.7;
+            font-size: 0.65rem;
+            margin-bottom: 2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            transition: all 0.2s;
+        }
+
+        .mem-btn .m-label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .mem-btn .m-label:active {
+            transform: scale(1.1);
+        }
+
+        .mem-btn .m-val {
+            font-weight: 700;
+            color: var(--calc-accent);
+            font-size: 0.85rem;
+        }
+
+        .mem-btn:active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .mem-save-btn {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            background: rgba(139, 92, 246, 0.2);
+            color: #d8b4fe;
+            font-size: 0.65rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mem-save-btn:hover {
+            background: rgba(139, 92, 246, 0.4);
+            color: white;
+        }
+
+        .mem-save-btn:active {
+            transform: translateY(1px);
+        }
+
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            flex: 1;
+        }
+
+        .k-btn {
+            border: none;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s;
+        }
+
+        .k-btn:active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .k-op {
+            background: #475569;
+        }
+
+        .k-eq {
+            background: #64748b;
+        }
+
+        .k-cl {
+            background: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .push-btn {
+            grid-column: span 4;
+            background: #475569;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 800;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #334155;
+            transition: all 0.1s;
+        }
+
+        .push-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #0284c7;
+        }
+
+        /* Right: Aggregation List */
+        .workspace-right {
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .list-header {
+            padding: 0.6rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .calc-list-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .calc-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            padding: 0.6rem;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .calc-item.selected {
+            border-color: var(--calc-accent);
+            background: rgba(56, 189, 248, 0.12);
+            box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.1);
+        }
+
+        .c-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .c-name {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .c-val {
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .c-ctrls {
+            display: flex;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        .c-btn {
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .c-plus {
+            background: #475569;
+            color: #fff;
+        }
+
+        .c-minus {
+            background: #475569;
+            color: #fff;
+        }
+
+        .c-del {
+            background: #334155;
+            color: #cbd5e1;
+        }
+
+        .calc-footer {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .total-val {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--calc-accent);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 440px) {
+            .calc-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1.2fr 0.8fr;
+                overflow-y: auto;
+            }
+
+            #calculator-panel {
+                height: 85vh;
+            }
+
+            #calculator-panel.minimized {
+                transform: translateY(calc(85vh - 45px));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                padding-bottom: 20px;
+                padding-right: 340px;
+                justify-content: flex-start;
+            }
+
+            .container {
+                margin: 20px auto;
+                margin-left: 20px;
+            }
+
+            #calculator-panel {
+                top: 20px;
+                right: 20px;
+                bottom: 20px;
+                left: auto;
+                width: 320px;
+                height: calc(100vh - 40px);
+                border-radius: 1rem;
+                transform: translateX(0);
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                border-bottom-left-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+            }
+
+            #calculator-panel.minimized {
+                transform: translateX(270px);
+                /* Keep ~50px visible */
+                cursor: pointer;
+            }
+
+            .calc-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .workspace-right {
+                /* List matches Top */
+                order: 1;
+                flex: 1;
+                min-height: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .workspace-left {
+                /* Keypad matches Bottom */
+                order: 2;
+                flex: 0 0 auto;
+                border-right: none;
+                padding-top: 1rem;
+            }
+
+            .calc-header #toggle-icon {
+                transform: rotate(-90deg);
+                display: inline-block;
+            }
+
+            #calculator-panel.minimized #toggle-icon {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <h1>逡ｰ蠖｢邂｡萓ｿ隕ｧ讀懃ｴ｢</h1>
+            <div class="main-tabs">
+                <div class="main-tab active" onclick="switchMainTab('search')">讀懃ｴ｢</div>
+                <div class="main-tab" onclick="switchMainTab('fav')">縺頑ｰ励↓蜈･繧・/div>
+                <div class="main-tab" onclick="switchMainTab('history')">螻･豁ｴ</div>
+            </div>
+
+            <div id="main-tab-search" class="main-tab-content active">
+                <div class="search-container">
+                    <span class="search-icon">剥</span>
+                    <input type="text" id="mainSearchInput" class="search-box" placeholder="繧ｭ繝ｼ繝ｯ繝ｼ繝画､懃ｴ｢..."
+                        autocomplete="off">
+                    <div id="search-results-list"></div>
+                </div>
+                <div class="manual-selection">
+                    <div class="form-group"><label>邂｡遞ｮ</label><select id="manualStd">
+                            <option value="GX">GX蠖｢</option>
+                            <option value="K">K蠖｢</option>
+                        </select></div>
+                    <div class="form-group"><label>逡ｰ蠖｢邂｡蜷・/label><select id="manualType">
+                            <option value="">驕ｸ謚・/option>
+                        </select></div>
+                    <div class="form-group"><label>蜻ｼ縺ｳ蠕・/label><select id="manualDiam" disabled>
+                            <option value="">驕ｸ謚・/option>
+                        </select></div>
+                </div>
+                <div id="resultCard" class="result-card">
+                    <div class="result-header">
+                        <div>
+                            <div class="result-title-main" id="resTitleMain">-</div>
+                            <div class="result-title-sub" id="resTitleSub">-</div>
+                        </div>
+                        <button class="btn-star" id="btnStar" onclick="toggleFavorite()">笘・/button>
+                    </div>
+                    <div class="dimension-grid">
+                        <div class="dimension-item" onclick="addValToCalc('L1', this)">
+                            <div class="dimension-label" id="lbl_L1">L1</div>
+                            <div class="dimension-value"><span id="val_L1">-</span><small>mm</small></div>
+                        </div>
+                        <div class="dimension-item" onclick="addValToCalc('L2', this)">
+                            <div class="dimension-label">L2</div>
+                            <div class="dimension-value"><span id="val_L2">-</span><small>mm</small></div>
+                        </div>
+                        <div class="dimension-item" onclick="addValToCalc('L3', this)">
+                            <div class="dimension-label">L3 (L1+L2縺ｮ蜷郁ｨ・</div>
+                            <div class="dimension-value"><span id="val_l">-</span><small>mm</small></div>
+                        </div>
+                        <div class="dimension-item" onclick="addValToCalc('蛻・ｲ宣聞', this)">
+                            <div class="dimension-label">蛻・ｲ千ｮ｡髟ｷ I</div>
+                            <div class="dimension-value"><span id="val_I">-</span><small>mm</small></div>
+                        </div>
+                        <div class="dimension-item" onclick="addValToCalc('S蟇ｸ豕・, this)">
+                            <div class="dimension-label" id="lbl_S">S蟇ｸ豕・/div>
+                            <div class="dimension-value"><span id="val_S">-</span><small>mm</small></div>
+                        </div>
+                        <div class="dimension-item" onclick="addValToCalc('H蟇ｸ豕・, this)">
+                            <div class="dimension-label">H</div>
+                            <div class="dimension-value"><span id="val_H">-</span><small>mm</small></div>
+                        </div>
+                        <div id="note_S" class="note-text">窶ｻS=蛻・ｲ千ｮ｡闃ｯ縺九ｉ譛牙柑髟ｷ縺ｾ縺ｧ</div>
+                    </div>
+                </div>
+            </div>
+            <div id="main-tab-fav" class="main-tab-content">
+                <div class="item-list" id="fav-list"></div>
+            </div>
+            <div id="main-tab-history" class="main-tab-content">
+                <div class="item-list" id="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div id="calculator-panel">
+        <div class="calc-header" onclick="toggleCalcPanel()"><span>屏・・險育ｮ励・髮・ｨ医Ρ繝ｼ繧ｯ繧ｹ繝壹・繧ｹ</span><span
+                id="toggle-icon">笆ｼ</span></div>
+        <div class="calc-workspace">
+            <div class="workspace-left">
+                <div class="kp-display-container">
+                    <div class="formula-bar" id="formula-bar"></div>
+                    <div class="main-display" id="kp-main-display">0</div>
+                </div>
+                <div class="memory-row">
+                    <div class="mem-slot"><button class="mem-btn" onclick="useMem(0)"><span class="m-label"
+                                onclick="event.stopPropagation();editMem(0)">M1 笨・/span><span class="m-val"
+                                id="m0">0</span></button><button class="mem-save-btn"
+                            onclick="triggerSave(0)">SAVE</button></div>
+                    <div class="mem-slot"><button class="mem-btn" onclick="useMem(1)"><span class="m-label"
+                                onclick="event.stopPropagation();editMem(1)">M2 笨・/span><span class="m-val"
+                                id="m1">0</span></button><button class="mem-save-btn"
+                            onclick="triggerSave(1)">SAVE</button></div>
+                    <div class="mem-slot"><button class="mem-btn" onclick="useMem(2)"><span class="m-label"
+                                onclick="event.stopPropagation();editMem(2)">M3 笨・/span><span class="m-val"
+                                id="m2">0</span></button><button class="mem-save-btn"
+                            onclick="triggerSave(2)">SAVE</button></div>
+                </div>
+                <div class="keypad-grid">
+                    <button class="k-btn k-cl" onclick="kpClear()">C</button><button class="k-btn k-op"
+                        onclick="kpOp('/')">ﾃｷ</button><button class="k-btn k-op" onclick="kpOp('*')">ﾃ・/button><button
+                        class="k-btn k-cl" onclick="kpDel()">BS</button>
+                    <button class="k-btn" onclick="kpNum('7')">7</button><button class="k-btn"
+                        onclick="kpNum('8')">8</button><button class="k-btn" onclick="kpNum('9')">9</button><button
+                        class="k-btn k-op" onclick="kpOp('-')">・・/button>
+                    <button class="k-btn" onclick="kpNum('4')">4</button><button class="k-btn"
+                        onclick="kpNum('5')">5</button><button class="k-btn" onclick="kpNum('6')">6</button><button
+                        class="k-btn k-op" onclick="kpOp('+')">・・/button>
+                    <button class="k-btn" onclick="kpNum('1')">1</button><button class="k-btn"
+                        onclick="kpNum('2')">2</button><button class="k-btn" onclick="kpNum('3')">3</button><button
+                        class="k-btn k-eq" style="grid-row:span 2" onclick="kpEq()">・・/button>
+                    <button class="k-btn" onclick="kpNum('0')">0</button><button class="k-btn"
+                        onclick="kpNum('.')">.</button><button class="k-btn"
+                        style="background:#475569; font-size:0.85rem" onclick="kpImport()">蠑慕畑</button>
+                    <button class="push-btn" onclick="pushKpToList()">筮・ｸ・險育ｮ礼ｵ先棡繧偵Μ繧ｹ繝医∈霑ｽ蜉</button>
+                </div>
+            </div>
+            <div class="workspace-right">
+                <div class="list-header">髮・ｨ医Μ繧ｹ繝・(繧ｿ繝・・縺ｧ驕ｸ謚・</div>
+                <div class="calc-list-wrap" id="calc-list-container"></div>
+                <div class="calc-footer"><button class="c-btn c-del" style="margin-right:auto; padding:4px 8px;"
+                        onclick="clearList()">蜈ｨ豸亥悉</button><span class="total-val"
+                        id="list-total-val">0</span><small>mm</small></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pipeData = [
+            // 閾ｪ逕ｱ蜈･蜉幃・岼
+            { "type": "逕ｲ蛻・ｮ｡", "diameter": 0, "L1": 0, "L2": 0, "search": ["kou", "aki", "kir"] },
+            { "type": "荵吝・邂｡", "diameter": 0, "L1": 0, "L2": 0, "search": ["ots", "bki", "kir"] },
+            // GX 90
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 110, "L2": 370, "l": 450, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 130, "L2": 390, "l": 479, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 145, "L2": 450, "l": 568, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 230, "L2": 520, "l": 666, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 280, "L2": 570, "l": 747, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 265, "L2": 550, "l": 716, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 375, "L2": 660, "l": 891, "search": ["kyoku", "mag"] },
+            // GX 45
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 70, "L2": 330, "l": 397, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 80, "L2": 340, "l": 416, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 100, "L2": 370, "l": 464, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 120, "L2": 410, "l": 522, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 140, "L2": 430, "l": 560, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 130, "L2": 440, "l": 560, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 175, "L2": 480, "l": 641, "search": ["kyoku", "mag"] },
+            // GX 荳｡蜿玲峇邂｡ 45
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 75, "L1": 70, "L3": 140, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 100, "L1": 80, "L3": 160, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 150, "L1": 100, "L3": 200, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 200, "L1": 120, "L3": 240, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 250, "L1": 140, "L3": 280, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 300, "L1": 130, "L3": 260, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 45蠎ｦ", "diameter": 400, "L1": 175, "L3": 350, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            // GX 22.5
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 50, "L2": 310, "l": 360, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 60, "L2": 320, "l": 380, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 70, "L2": 340, "l": 409, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 80, "L2": 370, "l": 449, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 80, "L2": 380, "l": 459, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 85, "L2": 385, "l": 469, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "22 1/2蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 105, "L2": 395, "l": 498, "search": ["kyoku", "mag"] },
+            // GX 荳｡蜿玲峇邂｡ 22.5
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 75, "L1": 50, "L3": 100, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 100, "L1": 60, "L3": 120, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 150, "L1": 70, "L3": 140, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 200, "L1": 80, "L3": 160, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 250, "L1": 80, "L3": 160, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 300, "L1": 85, "L3": 170, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            { "standard": "GX", "type": "荳｡蜿玲峇邂｡ 22 1/2蠎ｦ", "diameter": 400, "L1": 105, "L3": 210, "search": ["ryo", "ryou", "kyoku", "mag"] },
+            // GX 11.25
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 40, "L2": 300, "l": 340, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 50, "L2": 310, "l": 360, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 50, "L2": 320, "l": 370, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 60, "L2": 350, "l": 410, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 60, "L2": 350, "l": 410, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 60, "L2": 340, "l": 400, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "11 1/4蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 70, "L2": 350, "l": 420, "search": ["kyoku", "mag"] },
+            // GX 5.625
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 40, "L2": 300, "l": 340, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 50, "L2": 310, "l": 360, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 50, "L2": 320, "l": 370, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 60, "L2": 350, "l": 410, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 60, "L2": 350, "l": 410, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 50, "L2": 325, "l": 375, "search": ["kyoku", "mag"] },
+            { "standard": "GX", "type": "5 5/8蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 55, "L2": 335, "l": 390, "search": ["kyoku", "mag"] },
+            // GX 莠悟女荳∝ｭ礼ｮ｡・井ｸｻ邂｡・・            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(荳ｻ邂｡)", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "100x100", "L1": 120, "L2": 350, "l": 470, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(荳ｻ邂｡)", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(荳ｻ邂｡)", "diameter": "150x150", "L1": 150, "L2": 410, "l": 560, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(荳ｻ邂｡)", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "200x200", "L1": 170, "L2": 470, "l": 640, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(荳ｻ邂｡)", "diameter": "200x150", "L1": 150, "L2": 410, "l": 560, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(荳ｻ邂｡)", "diameter": "250x250", "L1": 200, "L2": 460, "l": 660, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(荳ｻ邂｡)", "diameter": "250x150", "L1": 150, "L2": 410, "l": 560, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "300x300", "L1": 235, "L2": 555, "l": 790, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "300x200", "L1": 175, "L2": 475, "l": 650, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(荳ｻ邂｡)", "diameter": "300x150", "L1": 145, "L2": 395, "l": 540, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "300x100", "L1": 115, "L2": 365, "l": 480, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "400x400", "L1": 295, "L2": 650, "l": 945, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(荳ｻ邂｡)", "diameter": "400x300", "L1": 235, "L2": 575, "l": 810, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
+            // GX 莠悟女荳∝ｭ礼ｮ｡・域椌邂｡・・            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(譫晉ｮ｡)", "diameter": "75x75", "L1": 100, "L2": 0, "l": 100, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "100x100", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(譫晉ｮ｡)", "diameter": "100x75", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(譫晉ｮ｡)", "diameter": "150x150", "L1": 150, "L2": 0, "l": 150, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "150x100", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・5(譫晉ｮ｡)", "diameter": "150x75", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "200x200", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(譫晉ｮ｡)", "diameter": "200x150", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "200x100", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(譫晉ｮ｡)", "diameter": "250x250", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(譫晉ｮ｡)", "diameter": "250x150", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "250x100", "L1": 190, "L2": 0, "l": 190, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "300x300", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "300x200", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・50(譫晉ｮ｡)", "diameter": "300x150", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "300x100", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "400x400", "L1": 295, "L2": 0, "l": 295, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "莠悟女荳∝ｭ礼ｮ｡ﾃ・00(譫晉ｮ｡)", "diameter": "400x300", "L1": 285, "L2": 0, "l": 285, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
+            // GX 繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・00", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "200x75", "L1": 100, "L2": 370, "l": 470, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・00", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・00", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "300x75", "L1": 115, "L2": 370, "l": 485, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "繝輔Λ繝ｳ繧ｸ莉倅ｸ∝ｭ礼ｮ｡ﾃ・5", "diameter": "400x75", "L1": 115, "L2": 370, "l": 485, "I": 350, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            // GX 迚・誠邂｡
+            { "standard": "GX", "type": "迚・誠邂｡", "diameter": 100, "L1": 410, "L2": 410, "l": 0, "search": ["kat"] },
+            { "standard": "GX", "type": "迚・誠邂｡", "diameter": 150, "L1": 410, "L2": 420, "l": 0, "search": ["kat"] },
+            { "standard": "GX", "type": "迚・誠邂｡", "diameter": 200, "L1": 420, "L2": 440, "l": 0, "search": ["kat"] },
+            { "standard": "GX", "type": "迚・誠邂｡", "diameter": 300, "L1": 720, "L2": 705, "l": 0, "search": ["kat"] },
+            { "standard": "GX", "type": "迚・誠邂｡", "diameter": 400, "L1": 530, "L2": 525, "l": 0, "search": ["kat"] },
+            // GX 蟶ｽ
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 75, "L1": 136.5, "L2": 0, "l": 136.5, "search": ["bou", "cap"] },
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 100, "L1": 137.5, "L2": 0, "l": 137.5, "search": ["bou", "cap"] },
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 150, "L1": 142.0, "L2": 0, "l": 142.0, "search": ["bou", "cap"] },
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 200, "L1": 144.0, "L2": 0, "l": 144.0, "search": ["bou", "cap"] },
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 300, "L1": 150.0, "L2": 0, "l": 150.0, "search": ["bou", "cap"] },
+            { "standard": "GX", "type": "蟶ｽ", "diameter": 400, "L1": 152.0, "L2": 0, "l": 152.0, "search": ["bou", "cap"] },
+            // GX 繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)
+            { "standard": "GX", "type": "繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)", "diameter": 75, "L1": 490, "L2": 0, "l": 490, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)", "diameter": 100, "L1": 490, "L2": 0, "l": 490, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)", "diameter": 150, "L1": 550, "L2": 0, "l": 550, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)", "diameter": 200, "L1": 610, "L2": 0, "l": 610, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "繧ｽ繝輔ヨ繧ｷ繝ｼ繝ｫ莉募・蠑・蜿励￠謖ｿ)", "diameter": 250, "L1": 680, "L2": 0, "l": 680, "search": ["sof", "val", "ben"] },
+            // K Type
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 292, "L2": 400, "l": 584, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 292, "L2": 400, "l": 584, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 342, "L2": 500, "l": 713, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 443, "L2": 600, "l": 872, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 445, "L2": 650, "l": 923, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 597, "L2": 800, "l": 1161, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "90蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 650, "L2": 850, "l": 1243, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 75, "L1": 207, "L2": 316, "l": 506, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 100, "L1": 207, "L2": 316, "l": 506, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 150, "L1": 249, "L2": 407, "l": 634, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 200, "L1": 292, "L2": 449, "l": 715, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 250, "L1": 294, "L2": 449, "l": 716, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 300, "L1": 337, "L2": 490, "l": 797, "search": ["kyoku", "mag"] },
+            { "standard": "K", "type": "45蠎ｦ譖ｲ邂｡", "diameter": 400, "L1": 423, "L2": 573, "l": 957, "search": ["kyoku", "mag"] },
+            // K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "75x75", "S": 273.5, "L1": 273.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "100x75", "S": 290.5, "L1": 290.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "100x100", "S": 300.0, "L1": 300.0, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "125x75", "S": 302.5, "L1": 302.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "125x100", "S": 312.5, "L1": 312.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "150x75", "S": 316.3, "L1": 316.3, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "150x100", "S": 331.0, "L1": 331.0, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "150x150", "S": 408.0, "L1": 408.0, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "200x75", "S": 341.5, "L1": 341.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "200x100", "S": 356.5, "L1": 356.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "200x150", "S": 425.5, "L1": 425.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            { "standard": "K", "type": "K蜿嶺ｸ肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡", "diameter": "200x200", "S": 447.5, "L1": 447.5, "L2": 0, "l": 0, "search": ["fud", "bud", "tes", "tee", "niu"] },
+            // GX蠖｢ 邯呵ｼｪ・域ｨ呎ｺ冶Χ莉倥￠蟇ｸ豕・y竄・ｼ・            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 75, "L1": 190, "L2": 0, "l": 190, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 100, "L1": 200, "L2": 0, "l": 200, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 150, "L1": 240, "L2": 0, "l": 240, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 200, "L1": 250, "L2": 0, "l": 250, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 250, "L1": 250, "L2": 0, "l": 250, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 300, "L1": 300, "L2": 0, "l": 300, "search": ["tug", "joi"] },
+            { "standard": "GX", "type": "邯呵ｼｪ", "diameter": 400, "L1": 300, "L2": 0, "l": 300, "search": ["tug", "joi"] },
+            // 繝輔Λ繝ｳ繧ｸ
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 75, "L1": 100, "L2": 0, "l": 100, "search": ["fla", "fra", "hur"] },
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 100, "L1": 110, "L2": 0, "l": 110, "search": ["fla", "fra", "hur"] },
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 150, "L1": 130, "L2": 0, "l": 130, "search": ["fla", "fra", "hur"] },
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 200, "L1": 150, "L2": 0, "l": 150, "search": ["fla", "fra", "hur"] },
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 250, "L1": 170, "L2": 0, "l": 170, "search": ["fla", "fra", "hur"] },
+            { "type": "繝輔Λ繝ｳ繧ｸ", "diameter": 300, "L1": 190, "L2": 0, "l": 190, "search": ["fla", "fra", "hur"] },
+            // 逶ｴ邂｡
+            { "type": "逶ｴ邂｡", "diameter": 75, "L1": 4000, "L2": 0, "l": 4000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 100, "L1": 4000, "L2": 0, "l": 4000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 150, "L1": 5000, "L2": 0, "l": 5000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 200, "L1": 6000, "L2": 0, "l": 6000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 250, "L1": 6000, "L2": 0, "l": 6000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 300, "L1": 6000, "L2": 0, "l": 6000, "search": ["cho", "tyo"] },
+            { "type": "逶ｴ邂｡", "diameter": 400, "L1": 6000, "L2": 0, "l": 6000, "search": ["cho", "tyo"] },
+            // 逶ｴ邂｡・医Λ繧､繝頑怏・・            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 75, "L1": 4030, "L2": 0, "l": 4030, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 100, "L1": 4030, "L2": 0, "l": 4030, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 150, "L1": 5040, "L2": 0, "l": 5040, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝・譛・", "diameter": 200, "L1": 6050, "L2": 0, "l": 6050, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 250, "L1": 6050, "L2": 0, "l": 6050, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 300, "L1": 6050, "L2": 0, "l": 6050, "search": ["cho", "tyo", "rai"] },
+            { "type": "逶ｴ邂｡(繝ｩ繧､繝頑怏)", "diameter": 400, "L1": 6050, "L2": 0, "l": 6050, "search": ["cho", "tyo", "rai"] },
+            // GX S繝吶Φ繝・            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 75, "L1": 480, "H": 480, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 100, "L1": 520, "H": 520, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 150, "L1": 630, "H": 630, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 200, "L1": 750, "H": 750, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 250, "L1": 850, "H": 850, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 300, "L1": 815, "H": 815, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 400, "L1": 1035, "H": 1035, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 75, "L1": 682, "H": 282, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 100, "L1": 716, "H": 296, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 150, "L1": 802, "H": 332, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 200, "L1": 904, "H": 374, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 250, "L1": 973, "H": 403, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 300, "L1": 973, "H": 403, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 400, "L1": 1118, "H": 463, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 75, "L1": 692, "H": 137, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 100, "L1": 731, "H": 145, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 150, "L1": 788, "H": 156, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 200, "L1": 865, "H": 172, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 250, "L1": 884, "H": 176, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 300, "L1": 904, "H": 180, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 400, "L1": 962, "H": 191, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 75, "L1": 673, "H": 66, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 100, "L1": 713, "H": 70, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 150, "L1": 732, "H": 72, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 200, "L1": 812, "H": 79, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 250, "L1": 812, "H": 79, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 300, "L1": 792, "H": 78, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 400, "L1": 832, "H": 82, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 75, "L1": 678, "H": 33, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 100, "L1": 718, "H": 35, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 150, "L1": 738, "H": 36, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 200, "L1": 818, "H": 40, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 250, "L1": 818, "H": 40, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 300, "L1": 748, "H": 37, "search": ["s", "bend"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5 5/8蠎ｦ", "diameter": 400, "L1": 778, "H": 38, "search": ["s", "bend"] },
+            // GX S繝吶Φ繝・Composite
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 75, "L1": 925, "H": 525, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 100, "L1": 973, "H": 553, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 150, "L1": 1066, "H": 596, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 200, "L1": 1197, "H": 667, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 250, "L1": 1265, "H": 695, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 300, "L1": 1240, "H": 670, "search": ["s", "bend", "com"] },
+            { "standard": "GX", "type": "S繝吶Φ繝・5ﾂｰ+5ﾂｰ5/8+45ﾂｰ", "diameter": 400, "L1": 1396, "H": 741, "search": ["s", "bend", "com"] },
+            // K S繝吶Φ繝・            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 75, "L1": 690, "H": 690, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 100, "L1": 690, "H": 690, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 150, "L1": 840, "H": 840, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 200, "L1": 1040, "H": 1040, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 250, "L1": 1100, "H": 1100, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 300, "L1": 1400, "H": 1400, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 350, "L1": 1400, "H": 1400, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・90蠎ｦ", "diameter": 400, "L1": 1500, "H": 1500, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 75, "L1": 910, "H": 370, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 100, "L1": 910, "H": 370, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 150, "L1": 1130, "H": 470, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 200, "L1": 1270, "H": 530, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 250, "L1": 1270, "H": 530, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 300, "L1": 1420, "H": 590, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 350, "L1": 1550, "H": 650, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・45蠎ｦ", "diameter": 400, "L1": 1690, "H": 700, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 75, "L1": 980, "H": 200, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 100, "L1": 980, "H": 200, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 150, "L1": 1130, "H": 220, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 200, "L1": 1290, "H": 260, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 250, "L1": 1290, "H": 260, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 300, "L1": 1460, "H": 290, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 350, "L1": 1610, "H": 320, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・22 1/2蠎ｦ", "diameter": 400, "L1": 1870, "H": 370, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 75, "L1": 1560, "H": 160, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 100, "L1": 1560, "H": 160, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 150, "L1": 1560, "H": 160, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 200, "L1": 1940, "H": 200, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 250, "L1": 1940, "H": 200, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 300, "L1": 1940, "H": 200, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 350, "L1": 2340, "H": 230, "search": ["s", "bend"] },
+            { "standard": "K", "type": "S繝吶Φ繝・11 1/4蠎ｦ", "diameter": 400, "L1": 2440, "H": 240, "search": ["s", "bend"] },
+            // K S繝吶Φ繝・Composite (Removed due to missing 5 5/8 standard bend data)
+        ];
+
+        const elements = {
+            sInput: document.getElementById('mainSearchInput'), sList: document.getElementById('search-results-list'), card: document.getElementById('resultCard'),
+            mStd: document.getElementById('manualStd'), mType: document.getElementById('manualType'), mDiam: document.getElementById('manualDiam'),
+            favList: document.getElementById('fav-list'), histList: document.getElementById('history-list'),
+            calcList: document.getElementById('calc-list-container'), calcTotalVal: document.getElementById('list-total-val'),
+            kpMain: document.getElementById('kp-main-display'), formula: document.getElementById('formula-bar'), cPanel: document.getElementById('calculator-panel')
+        };
+
+        let currentData = null, favorites = JSON.parse(localStorage.getItem('p_fav') || '[]'), history = JSON.parse(localStorage.getItem('p_his') || '[]');
+        let memory = JSON.parse(localStorage.getItem('p_mem') || '[0,0,0]'), listArr = JSON.parse(localStorage.getItem('p_list') || '[]'), selectedItemId = null;
+        let kp = '0', op = null, pre = null, next = true;
+
+        function init() {
+            elements.sInput.oninput = handleSearch; elements.sInput.onfocus = handleSearch;
+            elements.mStd.onchange = populateManualTypes; elements.mType.onchange = populateManualDiameters;
+            elements.mDiam.onchange = () => { if (elements.mStd.value && elements.mType.value && elements.mDiam.value) selectItem(pipeData.find(d => d.standard == elements.mStd.value && d.type == elements.mType.value && d.diameter == elements.mDiam.value)); };
+            // Global click to handle deselection more reliably
+            document.addEventListener('click', e => {
+                if (!elements.sInput.contains(e.target)) elements.sList.style.display = 'none';
+                // If clicking outside the list items in the workspace-right, deselect
+                if (e.target.closest('.workspace-right') && !e.target.closest('.calc-item') && !e.target.closest('.c-btn')) {
+                    selectedItemId = null; renderList();
+                }
+            });
+            document.addEventListener('keydown', handleCalcKeydown);
+            populateManualTypes(); renderFavorites(); renderHistory(); renderList(); updateMemDisplay();
+        }
+
+        function handleCalcKeydown(e) {
+            // Ignore if focus is on an input field
+            const active = document.activeElement;
+            if (active && (active.tagName === 'INPUT' || active.tagName === 'SELECT' || active.tagName === 'TEXTAREA')) return;
+
+            const k = e.key;
+            // Numbers and decimal
+            if (/^[0-9.]$/.test(k)) {
+                e.preventDefault();
+                kpNum(k);
+            }
+            // Operators
+            else if (['+', '-', '*', '/'].includes(k)) {
+                e.preventDefault();
+                kpOp(k);
+            }
+            // Equals
+            else if (k === 'Enter' || k === '=') {
+                e.preventDefault();
+                kpEq();
+            }
+            // Delete / Backspace
+            else if (k === 'Backspace' || k === 'Delete') {
+                e.preventDefault();
+                kpDel();
+            }
+            // Clear (Escape)
+            else if (k === 'Escape') {
+                e.preventDefault();
+                kpClear();
+            }
+        }
+
+        function switchMainTab(m) { document.querySelectorAll('.main-tab').forEach(e => e.classList.remove('active')); document.querySelectorAll('.main-tab-content').forEach(e => e.classList.remove('active')); document.querySelector(`.main-tab[onclick*="${m}"]`).classList.add('active'); document.getElementById(`main-tab-${m}`).classList.add('active'); }
+        function handleSearch() {
+            const q = elements.sInput.value.toLowerCase().replace(/\s/g, '');
+            if (!q) {
+                if (history.length > 0) {
+                    elements.sList.innerHTML = history.map(d => {
+                        const dia = String(d.diameter).includes('x') ? d.diameter : `ﾏ・{d.diameter}`;
+                        return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'>
+                            <span class="res-tag" style="background:#f1f5f9; color:#64748b;">螻･豁ｴ</span>
+                            <span class="res-main">${d.type} ${dia}</span>
+                        </div>`;
+                    }).join('');
+                    elements.sList.style.display = 'block';
+                } else {
+                    elements.sList.style.display = 'none';
+                }
+                return;
+            }
+            const m = pipeData.filter(d => {
+                const names = `${d.standard || ''}${d.type}${d.diameter}`.toLowerCase();
+                const tags = (d.search || []).join('').toLowerCase();
+                return names.includes(q) || tags.includes(q);
+            });
+            elements.sList.innerHTML = m.map(d => {
+                const dia = String(d.diameter).includes('x') ? d.diameter : `ﾏ・{d.diameter}`;
+                return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'><span class="res-tag">${d.standard || ''}</span><span class="res-main">${d.type} ${dia}</span></div>`;
+            }).join('');
+            elements.sList.style.display = m.length ? 'block' : 'none';
+        }
+        function populateManualTypes() { const types = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value).map(d => d.type))].sort(); elements.mType.innerHTML = '<option value="">驕ｸ謚・/option>' + types.map(t => `<option value="${t}">${t}</option>`).join(''); elements.mDiam.disabled = true; }
+        function populateManualDiameters() {
+            const diams = [...new Set(pipeData.filter(d => d.standard === elements.mStd.value && d.type === elements.mType.value).map(d => d.diameter))];
+            elements.mDiam.innerHTML = '<option value="">驕ｸ謚・/option>' + diams.map(d => {
+                const label = String(d).includes('x') ? d : `ﾏ・{d}`;
+                return `<option value="${d}">${label}</option>`;
+            }).join('');
+            elements.mDiam.disabled = false;
+        }
+        function selectItem(data) {
+            if (!data) return;
+            currentData = data;
+            elements.sList.style.display = 'none';
+            const diaStr = String(data.diameter).includes('x') ? data.diameter : `ﾏ・{data.diameter}`;
+            document.getElementById('resTitleMain').textContent = `${data.type} ${diaStr}`;
+            document.getElementById('resTitleSub').textContent = data.standard ? `${data.standard}蠖｢` : '';
+
+            const set = (id, v) => {
+                const el = document.getElementById(id), b = el.closest('.dimension-item');
+                if (v !== undefined && v !== null && v !== 0) {
+                    el.textContent = v;
+                    b.style.display = 'block';
+                } else {
+                    b.style.display = 'none';
+                }
+            };
+
+            // L3 or L1+L2
+            let sumL = data.L3 || (parseFloat(data.L1 || 0) + parseFloat(data.L2 || 0));
+            if (data.type === '逶ｴ邂｡' || data.type.includes('逶ｴ邂｡')) sumL = data.L1; // 逶ｴ邂｡縺ｯL1縺昴・縺ｾ縺ｾ
+            if (data.type.includes('荳肴鵡豌ｴ')) sumL = 0; // 荳肴妙豌ｴ蜑ｲ荳∝ｭ礼ｮ｡縺ｯL3髱櫁｡ｨ遉ｺ・・縺ｫ縺吶ｋ縺ｨ髱櫁｡ｨ遉ｺ縺ｫ縺ｪ繧九Ο繧ｸ繝・け縺ｪ繧碓K・・
+            const isSBend = data.type.includes('S繝吶Φ繝・);
+            if (isSBend) {
+                sumL = 0; // S繝吶Φ繝峨・L3髱櫁｡ｨ遉ｺ
+            }
+
+            set('val_l', sumL);
+            set('val_L1', data.L1);
+            set('val_L2', isSBend ? 0 : data.L2); // Hide L2 for S-Bend
+            set('val_I', isSBend ? 0 : data.I);   // Hide I for S-Bend
+            set('val_S', isSBend ? 0 : data.S);   // Hide S for S-Bend
+            set('val_H', data.H);
+
+            const isFudan = data.type.includes('荳肴妙豌ｴ');
+            document.getElementById('lbl_S').textContent = isFudan ? 'S1' : 'S蟇ｸ豕・;
+            document.getElementById('lbl_L1').textContent = isSBend ? 'L' : 'L1';
+            document.getElementById('note_S').textContent = isFudan ? '窶ｻS1=L1' : '窶ｻS=蛻・ｲ千ｮ｡闃ｯ縺九ｉ譛牙柑髟ｷ縺ｾ縺ｧ';
+            document.getElementById('note_S').textContent = isFudan ? '窶ｻS1=L1' : '窶ｻS=蛻・ｲ千ｮ｡闃ｯ縺九ｉ譛牙柑髟ｷ縺ｾ縺ｧ';
+            if (isFudan && (data.S === undefined || data.S === 0)) {
+                // Force S display if it is Fudan but maybe absent? user said S=L1.
+                // In data update I will make sure S is set.
+            }
+
+            document.getElementById('note_S').style.display = (data.S || isFudan) ? 'block' : 'none';
+            elements.card.classList.add('active');
+            updateStar();
+            addToHistory(data);
+        }
+        window.selectFromList = d => { switchMainTab('search'); elements.sInput.value = d.type + ' ﾏ・ + d.diameter; selectItem(d); };
+        function updateStar() { const isF = favorites.some(f => f.standard === currentData.standard && f.type === currentData.type && f.diameter === currentData.diameter); document.getElementById('btnStar').className = isF ? 'btn-star active' : 'btn-star'; document.getElementById('btnStar').textContent = isF ? '笘・ : '笘・; }
+        window.toggleFavorite = () => { const idx = favorites.findIndex(f => f.standard === currentData.standard && f.type === currentData.type && f.diameter === currentData.diameter); if (idx >= 0) favorites.splice(idx, 1); else favorites.push(currentData); localStorage.setItem('p_fav', JSON.stringify(favorites)); updateStar(); renderFavorites(); };
+        function renderFavorites() {
+            elements.favList.innerHTML = favorites.map(d => {
+                const dia = String(d.diameter).includes('x') ? d.diameter : `ﾏ・{d.diameter}`;
+                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${d.type} ${dia}</b><br><small>${d.standard || ''}${d.standard ? '蠖｢' : ''}</small></div><span>笘・/span></div>`;
+            }).join('') || '<p style="text-align:center;color:#9ca3af">縺ｪ縺・/p>';
+        }
+        function addToHistory(d) { history = history.filter(h => !(h.standard === d.standard && h.type === d.type && h.diameter === d.diameter)); history.unshift(d); if (history.length > 20) history.pop(); localStorage.setItem('p_his', JSON.stringify(history)); renderHistory(); }
+        function renderHistory() {
+            elements.histList.innerHTML = history.map(d => {
+                const dia = String(d.diameter).includes('x') ? d.diameter : `ﾏ・{d.diameter}`;
+                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${d.type} ${dia}</b><br><small>${d.standard || ''}${d.standard ? '蠖｢' : ''}</small></div><span>窶ｺ</span></div>`;
+            }).join('') || '<p style="text-align:center;color:#9ca3af">縺ｪ縺・/p>';
+        }
+
+        // --- CALCULATOR ---
+        function toggleCalcPanel() { elements.cPanel.classList.toggle('minimized'); document.getElementById('toggle-icon').textContent = elements.cPanel.classList.contains('minimized') ? '笆ｲ' : '笆ｼ'; }
+
+        // Deselect on workspace-right click (excluding items)
+        // This block is replaced by the global event listener in init()
+        // document.querySelector('.workspace-right').addEventListener('click', (e) => {
+        //     if (e.target.classList.contains('calc-list-wrap') || e.target.classList.contains('list-header')) {
+        //         selectedItemId = null; renderList();
+        //     }
+        // });
+
+        window.kpNum = n => { if (next) { kp = n; next = false; } else { if (n === '.' && kp.includes('.')) return; kp += n; } updateKp(); };
+        window.kpOp = o => { if (op && !next) kpEq(); pre = parseFloat(kp); op = o; next = true; elements.formula.textContent = `${pre} ${o}`; };
+        window.kpEq = () => { if (op && pre != null) { const c = parseFloat(kp); let r = 0; if (op === '+') r = pre + c; if (op === '-') r = pre - c; if (op === '*') r = pre * c; if (op === '/') r = pre / c; elements.formula.textContent = `${pre}${op}${c}=`; kp = String(Math.round(r * 1000) / 1000); op = null; pre = null; next = true; updateKp(); } };
+        window.kpClear = () => { kp = '0'; op = null; pre = null; next = true; elements.formula.textContent = ''; updateKp(); };
+        window.kpDel = () => { if (next) return; kp = kp.length > 1 ? kp.slice(0, -1) : '0'; updateKp(); };
+        function updateKp() { elements.kpMain.textContent = kp; }
+
+        function updateMemDisplay() { [0, 1, 2].forEach(i => document.getElementById(`m${i}`).textContent = memory[i]); }
+
+        window.triggerSave = idx => {
+            let valToSave = parseFloat(kp);
+            let targetRef = "髮ｻ蜊馴擇";
+            if (selectedItemId !== null) {
+                const item = listArr.find(x => x.id === selectedItemId);
+                if (item) {
+                    valToSave = item.val;
+                    targetRef = "繝ｪ繧ｹ繝磯・岼";
+                }
+            }
+            memory[idx] = valToSave;
+            localStorage.setItem('p_mem', JSON.stringify(memory)); updateMemDisplay();
+            const b = document.querySelectorAll('.mem-save-btn')[idx]; b.textContent = "OK!";
+            setTimeout(() => b.textContent = "SAVE", 800);
+        };
+
+        window.editMem = idx => {
+            const v = prompt(`M${idx + 1} 縺ｫ蜈･蜉帙☆繧区焚蛟､:`, memory[idx]);
+            if (v !== null && !isNaN(v) && v !== "") {
+                memory[idx] = parseFloat(v);
+                localStorage.setItem('p_mem', JSON.stringify(memory));
+                updateMemDisplay();
+            }
+        };
+
+        window.useMem = idx => { kp = String(memory[idx]); next = false; updateKp(); };
+
+        window.kpImport = () => {
+            let val = elements.calcTotalVal.textContent;
+            if (selectedItemId !== null) {
+                const item = listArr.find(x => x.id === selectedItemId);
+                if (item) val = String(item.val);
+                else selectedItemId = null;
+            }
+            kp = val; next = false; updateKp();
+        };
+        window.pushKpToList = () => { listArr.push({ id: Date.now(), name: '閾ｪ逕ｱ險育ｮ・, val: parseFloat(kp), plus: true }); saveList(); };
+        window.addValToCalc = (l, el) => { if (!currentData) return; const v = parseFloat(el.querySelector('.dimension-value').textContent); if (isNaN(v)) return; listArr.push({ id: Date.now(), name: `${currentData.type} ${l}`, val: v, plus: true }); saveList(); el.style.backgroundColor = '#eef2ff'; setTimeout(() => el.style.backgroundColor = '#fff', 200); };
+        function saveList() { localStorage.setItem('p_list', JSON.stringify(listArr)); renderList(); }
+        let dragSrcEl = null;
+        function handleDragStart(e) {
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.getAttribute('data-id'));
+            this.classList.add('dragging');
+        }
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation();
+            const srcId = parseInt(e.dataTransfer.getData('text/html'));
+            const destId = parseInt(this.getAttribute('data-id'));
+            if (srcId !== destId) {
+                const srcIdx = listArr.findIndex(i => i.id === srcId);
+                const destIdx = listArr.findIndex(i => i.id === destId);
+                if (srcIdx >= 0 && destIdx >= 0) {
+                    const [movedItem] = listArr.splice(srcIdx, 1);
+                    listArr.splice(destIdx, 0, movedItem);
+                    saveList();
+                }
+            }
+            return false;
+        }
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        window.copyItem = id => {
+            const item = listArr.find(x => x.id === id);
+            if (item) {
+                const newItem = { ...item, id: Date.now() };
+                const idx = listArr.findIndex(x => x.id === id);
+                listArr.splice(idx + 1, 0, newItem);
+                saveList();
+            }
+        };
+
+        function renderList() {
+            let t = 0;
+            elements.calcList.innerHTML = listArr.map(i => {
+                t += i.plus ? i.val : -i.val;
+                return `<div class="calc-item ${selectedItemId === i.id ? 'selected' : ''}" 
+                            draggable="true" 
+                            data-id="${i.id}"
+                            onclick="event.stopPropagation();toggleSelect(${i.id})">
+                            <div class="c-info"><div class="c-name">${i.name}</div><div class="c-val">${i.plus ? '+' : '-'}${i.val}</div></div>
+                            <div class="c-ctrls">
+                                <button class="c-btn c-plus" onclick="event.stopPropagation();copyItem(${i.id})">搭</button>
+                                <button class="c-btn c-plus" onclick="event.stopPropagation();toggleSign(${i.id})">${i.plus ? '・・ : '・・}</button>
+                                <button class="c-btn c-del" onclick="event.stopPropagation();rmItem(${i.id})">ﾃ・/button>
+                            </div>
+                        </div>`;
+            }).join('');
+
+            // Attach drag events
+            const cols = document.querySelectorAll('.calc-item');
+            cols.forEach(col => {
+                col.addEventListener('dragstart', handleDragStart, false);
+                col.addEventListener('dragover', handleDragOver, false);
+                col.addEventListener('drop', handleDrop, false);
+                col.addEventListener('dragend', handleDragEnd, false);
+            });
+
+            elements.calcTotalVal.textContent = Math.round(t * 10) / 10;
+        }
+        window.toggleSelect = id => { selectedItemId = (selectedItemId === id ? null : id); renderList(); };
+        window.toggleSign = id => { const i = listArr.find(x => x.id === id); i.plus = !i.plus; saveList(); };
+        window.rmItem = id => { listArr = listArr.filter(x => x.id !== id); if (selectedItemId === id) selectedItemId = null; saveList(); };
+        window.clearList = () => { if (confirm('髮・ｨ医Μ繧ｹ繝医ｒ縺吶∋縺ｦ豸亥悉縺励∪縺吶°・・)) { listArr = []; selectedItemId = null; saveList(); } };
+
+        init();
+    </script>
+</body>
+
+</html>
