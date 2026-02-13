@@ -718,15 +718,15 @@
                             <div class="dimension-value"><span id="val_L1">-</span><small>mm</small></div>
                         </div>
                         <div class="dimension-item" onclick="addValToCalc('L2', this)">
-                            <div class="dimension-label">L2</div>
+                            <div class="dimension-label" id="lbl_L2">L2</div>
                             <div class="dimension-value"><span id="val_L2">-</span><small>mm</small></div>
                         </div>
                         <div class="dimension-item" onclick="addValToCalc('L3', this)">
-                            <div class="dimension-label">L3 (L1+L2の合計)</div>
+                            <div class="dimension-label" id="lbl_l">L3 (L1+L2の合計)</div>
                             <div class="dimension-value"><span id="val_l">-</span><small>mm</small></div>
                         </div>
                         <div class="dimension-item" onclick="addValToCalc('分岐長', this)">
-                            <div class="dimension-label">分岐管長 I</div>
+                            <div class="dimension-label" id="lbl_I">分岐管長 I</div>
                             <div class="dimension-value"><span id="val_I">-</span><small>mm</small></div>
                         </div>
                         <div class="dimension-item" onclick="addValToCalc('S寸法', this)">
@@ -734,7 +734,7 @@
                             <div class="dimension-value"><span id="val_S">-</span><small>mm</small></div>
                         </div>
                         <div class="dimension-item" onclick="addValToCalc('H寸法', this)">
-                            <div class="dimension-label">H</div>
+                            <div class="dimension-label" id="lbl_H">H</div>
                             <div class="dimension-value"><span id="val_H">-</span><small>mm</small></div>
                         </div>
                         <div id="note_S" class="note-text">※S=分岐管芯から有効長まで</div>
@@ -871,60 +871,60 @@
             { "standard": "GX", "type": "5 5/8度曲管", "diameter": 350, "L1": 50, "L2": 330, "l": 380, "search": ["kyoku", "mag"] },
             { "standard": "GX", "type": "5 5/8度曲管", "diameter": 400, "L1": 55, "L2": 335, "l": 390, "search": ["kyoku", "mag"] },
             // GX 二受丁字管（主管）
-            { "standard": "GX", "type": "二受丁字管×75(主管)", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(主管)", "diameter": "100x100", "L1": 120, "L2": 350, "l": 470, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×75(主管)", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(主管)", "diameter": "150x150", "L1": 150, "L2": 410, "l": 560, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(主管)", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×75(主管)", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×200(主管)", "diameter": "200x200", "L1": 170, "L2": 470, "l": 640, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(主管)", "diameter": "200x150", "L1": 150, "L2": 410, "l": 560, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(主管)", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×250(主管)", "diameter": "250x250", "L1": 200, "L2": 460, "l": 660, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(主管)", "diameter": "250x150", "L1": 150, "L2": 410, "l": 560, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(主管)", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×300(主管)", "diameter": "300x300", "L1": 235, "L2": 555, "l": 790, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×200(主管)", "diameter": "300x200", "L1": 175, "L2": 475, "l": 650, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(主管)", "diameter": "300x150", "L1": 145, "L2": 395, "l": 540, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(主管)", "diameter": "300x100", "L1": 115, "L2": 365, "l": 480, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×350(主管)", "diameter": "350x350", "L1": 265, "L2": 625, "l": 890, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×250(主管)", "diameter": "350x250", "L1": 205, "L2": 545, "l": 750, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×400(主管)", "diameter": "400x400", "L1": 295, "L2": 650, "l": 945, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×300(主管)", "diameter": "400x300", "L1": 235, "L2": 575, "l": 810, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 75x75(主管)", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 100x100(主管)", "diameter": "100x100", "L1": 120, "L2": 350, "l": 470, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 100x75(主管)", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x150(主管)", "diameter": "150x150", "L1": 150, "L2": 410, "l": 560, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x100(主管)", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x75(主管)", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x200(主管)", "diameter": "200x200", "L1": 170, "L2": 470, "l": 640, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x150(主管)", "diameter": "200x150", "L1": 150, "L2": 410, "l": 560, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x100(主管)", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x250(主管)", "diameter": "250x250", "L1": 200, "L2": 460, "l": 660, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x150(主管)", "diameter": "250x150", "L1": 150, "L2": 410, "l": 560, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x100(主管)", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x300(主管)", "diameter": "300x300", "L1": 235, "L2": 555, "l": 790, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x200(主管)", "diameter": "300x200", "L1": 175, "L2": 475, "l": 650, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x150(主管)", "diameter": "300x150", "L1": 145, "L2": 395, "l": 540, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x100(主管)", "diameter": "300x100", "L1": 115, "L2": 365, "l": 480, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 350x350(主管)", "diameter": "350x350", "L1": 265, "L2": 625, "l": 890, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 350x250(主管)", "diameter": "350x250", "L1": 205, "L2": 545, "l": 750, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 400x400(主管)", "diameter": "400x400", "L1": 295, "L2": 650, "l": 945, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 400x300(主管)", "diameter": "400x300", "L1": 235, "L2": 575, "l": 810, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
             // GX 二受丁字管（枝管）
-            { "standard": "GX", "type": "二受丁字管×75(枝管)", "diameter": "75x75", "L1": 100, "L2": 0, "l": 100, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(枝管)", "diameter": "100x100", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×75(枝管)", "diameter": "100x75", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(枝管)", "diameter": "150x150", "L1": 150, "L2": 0, "l": 150, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(枝管)", "diameter": "150x100", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×75(枝管)", "diameter": "150x75", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×200(枝管)", "diameter": "200x200", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(枝管)", "diameter": "200x150", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(枝管)", "diameter": "200x100", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×250(枝管)", "diameter": "250x250", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(枝管)", "diameter": "250x150", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(枝管)", "diameter": "250x100", "L1": 190, "L2": 0, "l": 190, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×300(枝管)", "diameter": "300x300", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×200(枝管)", "diameter": "300x200", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×150(枝管)", "diameter": "300x150", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×100(枝管)", "diameter": "300x100", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×350(枝管)", "diameter": "350x350", "L1": 265, "L2": 0, "l": 265, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×250(枝管)", "diameter": "350x250", "L1": 265, "L2": 0, "l": 265, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×400(枝管)", "diameter": "400x400", "L1": 295, "L2": 0, "l": 295, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
-            { "standard": "GX", "type": "二受丁字管×300(枝管)", "diameter": "400x300", "L1": 285, "L2": 0, "l": 285, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 75x75(枝管)", "diameter": "75x75", "L1": 100, "L2": 0, "l": 100, "I": 100, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 100x100(枝管)", "diameter": "100x100", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 100x75(枝管)", "diameter": "100x75", "L1": 120, "L2": 0, "l": 120, "I": 120, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x150(枝管)", "diameter": "150x150", "L1": 150, "L2": 0, "l": 150, "I": 150, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x100(枝管)", "diameter": "150x100", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 150x75(枝管)", "diameter": "150x75", "L1": 140, "L2": 0, "l": 140, "I": 140, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x200(枝管)", "diameter": "200x200", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x150(枝管)", "diameter": "200x150", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 200x100(枝管)", "diameter": "200x100", "L1": 170, "L2": 0, "l": 170, "I": 170, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x250(枝管)", "diameter": "250x250", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x150(枝管)", "diameter": "250x150", "L1": 200, "L2": 0, "l": 200, "I": 200, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 250x100(枝管)", "diameter": "250x100", "L1": 190, "L2": 0, "l": 190, "I": 190, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x300(枝管)", "diameter": "300x300", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x200(枝管)", "diameter": "300x200", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x150(枝管)", "diameter": "300x150", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 300x100(枝管)", "diameter": "300x100", "L1": 235, "L2": 0, "l": 235, "I": 235, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 350x350(枝管)", "diameter": "350x350", "L1": 265, "L2": 0, "l": 265, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 350x250(枝管)", "diameter": "350x250", "L1": 265, "L2": 0, "l": 265, "I": 265, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 400x400(枝管)", "diameter": "400x400", "L1": 295, "L2": 0, "l": 295, "I": 295, "search": ["tes", "tee", "niu", "nij"] },
+            { "standard": "GX", "type": "二受丁字管 400x300(枝管)", "diameter": "400x300", "L1": 285, "L2": 0, "l": 285, "I": 285, "search": ["tes", "tee", "niu", "nij"] },
             // GX フランジ付丁字管
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×100", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "200x75", "L1": 100, "L2": 370, "l": 470, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×100", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×100", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "300x75", "L1": 105, "L2": 355, "l": 460, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×100", "diameter": "300x100", "L1": 115, "L2": 370, "l": 485, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "350x75", "L1": 105, "L2": 355, "l": 460, "I": 325, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×100", "diameter": "350x100", "L1": 115, "L2": 370, "l": 485, "I": 325, "search": ["tes", "tee", "fla", "fra", "hur"] },
-            { "standard": "GX", "type": "フランジ付丁字管×75", "diameter": "400x75", "L1": 105, "L2": 360, "l": 465, "I": 350, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 75x75", "diameter": "75x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 100x75", "diameter": "100x75", "L1": 100, "L2": 340, "l": 440, "I": 200, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 150x75", "diameter": "150x75", "L1": 100, "L2": 350, "l": 450, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 150x100", "diameter": "150x100", "L1": 120, "L2": 360, "l": 480, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 200x75", "diameter": "200x75", "L1": 100, "L2": 370, "l": 470, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 200x100", "diameter": "200x100", "L1": 120, "L2": 380, "l": 500, "I": 250, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 250x100", "diameter": "250x100", "L1": 120, "L2": 380, "l": 500, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 300x75", "diameter": "300x75", "L1": 105, "L2": 355, "l": 460, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 300x100", "diameter": "300x100", "L1": 115, "L2": 370, "l": 485, "I": 300, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 350x75", "diameter": "350x75", "L1": 105, "L2": 355, "l": 460, "I": 325, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 350x100", "diameter": "350x100", "L1": 115, "L2": 370, "l": 485, "I": 325, "search": ["tes", "tee", "fla", "fra", "hur"] },
+            { "standard": "GX", "type": "フランジ付丁字管 400x75", "diameter": "400x75", "L1": 105, "L2": 360, "l": 465, "I": 350, "search": ["tes", "tee", "fla", "fra", "hur"] },
             // GX 片落管
             { "standard": "GX", "type": "片落管", "diameter": 100, "L1": 410, "L2": 410, "l": 0, "search": ["kat"] },
             { "standard": "GX", "type": "片落管", "diameter": 150, "L1": 410, "L2": 420, "l": 0, "search": ["kat"] },
@@ -943,15 +943,10 @@
             { "standard": "GX", "type": "帽", "diameter": 300, "L1": 150.0, "L2": 0, "l": 150.0, "search": ["bou", "cap"] },
             { "standard": "GX", "type": "帽", "diameter": 350, "L1": 150.0, "L2": 0, "l": 150.0, "search": ["bou", "cap"] },
             { "standard": "GX", "type": "帽", "diameter": 400, "L1": 152.0, "L2": 0, "l": 152.0, "search": ["bou", "cap"] },
-            // GX ソフトシール仕切弁(受け挿)
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 75, "L1": 490, "L2": 0, "l": 490, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 100, "L1": 490, "L2": 0, "l": 490, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 150, "L1": 550, "L2": 0, "l": 550, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 200, "L1": 610, "L2": 0, "l": 610, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 250, "L1": 590, "L2": 0, "l": 590, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 300, "L1": 700, "L2": 0, "l": 700, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 350, "L1": 760, "L2": 0, "l": 760, "search": ["sof", "val", "ben"] },
-            { "standard": "GX", "type": "ソフトシール仕切弁(受け挿)", "diameter": 400, "L1": 804, "L2": 0, "l": 804, "search": ["sof", "val", "ben"] },
+            // GX ソフトシール仕切弁(両受)
+            // GX ソフトシール仕切弁(両受)
+            { "standard": "GX", "type": "ソフトシール仕切弁(両受)", "diameter": 350, "L1": 760, "L2": 460, "l": 760, "search": ["sof", "val", "ben"] },
+            { "standard": "GX", "type": "ソフトシール仕切弁(両受)", "diameter": 400, "L1": 804, "L2": 500, "l": 804, "search": ["sof", "val", "ben"] },
             // K Type
             { "standard": "K", "type": "90度曲管", "diameter": 75, "L1": 292, "L2": 400, "l": 584, "search": ["kyoku", "mag"] },
             { "standard": "K", "type": "90度曲管", "diameter": 100, "L1": 292, "L2": 400, "l": 584, "search": ["kyoku", "mag"] },
@@ -1153,16 +1148,27 @@
             }
         }
 
+        // Helper to format display name for Tee
+        function getDisplayName(d) {
+            let name = d.type;
+            const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
+            if (name.startsWith('二受丁字管') && (name.endsWith('(主管)') || name.endsWith('(枝管)'))) {
+                const parts = d.diameter.split('x');
+                name = `二受丁字管φ${parts[0]}×φ${parts[1]}`;
+                return name;
+            }
+            return `${name} ${dia}`;
+        }
+
         function switchMainTab(m) { document.querySelectorAll('.main-tab').forEach(e => e.classList.remove('active')); document.querySelectorAll('.main-tab-content').forEach(e => e.classList.remove('active')); document.querySelector(`.main-tab[onclick*="${m}"]`).classList.add('active'); document.getElementById(`main-tab-${m}`).classList.add('active'); }
         function handleSearch() {
             const q = elements.sInput.value.toLowerCase().replace(/\s/g, '');
             if (!q) {
                 if (history.length > 0) {
                     elements.sList.innerHTML = history.map(d => {
-                        const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
                         return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'>
                             <span class="res-tag" style="background:#f1f5f9; color:#64748b;">履歴</span>
-                            <span class="res-main">${d.type} ${dia}</span>
+                            <span class="res-main">${getDisplayName(d)}</span>
                         </div>`;
                     }).join('');
                     elements.sList.style.display = 'block';
@@ -1177,8 +1183,7 @@
                 return names.includes(q) || tags.includes(q);
             });
             elements.sList.innerHTML = m.map(d => {
-                const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
-                return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'><span class="res-tag">${d.standard || ''}</span><span class="res-main">${d.type} ${dia}</span></div>`;
+                return `<div class="search-result-item" onclick='selectFromList(${JSON.stringify(d)})'><span class="res-tag">${d.standard || ''}</span><span class="res-main">${getDisplayName(d)}</span></div>`;
             }).join('');
             elements.sList.style.display = m.length ? 'block' : 'none';
         }
@@ -1204,8 +1209,7 @@
             if (!data) return;
             currentData = data;
             elements.sList.style.display = 'none';
-            const diaStr = String(data.diameter).includes('x') ? data.diameter : `φ${data.diameter}`;
-            document.getElementById('resTitleMain').textContent = `${data.type} ${diaStr}`;
+            document.getElementById('resTitleMain').textContent = getDisplayName(data);
             document.getElementById('resTitleSub').textContent = data.standard ? `${data.standard}形` : '';
 
             const set = (id, v) => {
@@ -1236,10 +1240,22 @@
             set('val_H', data.H);
 
             const isFudan = data.type.includes('不断水');
+            const isValve = data.type.includes('仕切弁');
             document.getElementById('lbl_S').textContent = isFudan ? 'S1' : 'S寸法';
-            document.getElementById('lbl_L1').textContent = isSBend ? 'L' : 'L1';
+            document.getElementById('lbl_L1').textContent = isSBend ? 'L' : (isValve ? 'L' : 'L1');
+            document.getElementById('lbl_L2').textContent = isValve ? '有効長 L2' : 'L2';
             document.getElementById('note_S').textContent = isFudan ? '※S1=L1' : '※S=分岐管芯から有効長まで';
-            document.getElementById('note_S').textContent = isFudan ? '※S1=L1' : '※S=分岐管芯から有効長まで';
+
+            // Special UI reduction for Soft Seal Valve
+            if (isValve) {
+                set('val_L1', 0); // Hide L1 (using L2 as L)
+                set('val_l', 0);  // Hide L3
+                set('val_I', 0);
+                set('val_S', 0);
+                set('val_H', 0);
+                set('val_L2', data.L2);
+                document.getElementById('lbl_L2').textContent = 'L'; // Rename L2 Label to L
+            }
             if (isFudan && (data.S === undefined || data.S === 0)) {
                 // Force S display if it is Fudan but maybe absent? user said S=L1.
                 // In data update I will make sure S is set.
@@ -1255,15 +1271,13 @@
         window.toggleFavorite = () => { const idx = favorites.findIndex(f => f.standard === currentData.standard && f.type === currentData.type && f.diameter === currentData.diameter); if (idx >= 0) favorites.splice(idx, 1); else favorites.push(currentData); localStorage.setItem('p_fav', JSON.stringify(favorites)); updateStar(); renderFavorites(); };
         function renderFavorites() {
             elements.favList.innerHTML = favorites.map(d => {
-                const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
-                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${d.type} ${dia}</b><br><small>${d.standard || ''}${d.standard ? '形' : ''}</small></div><span>★</span></div>`;
+                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${getDisplayName(d)}</b><br><small>${d.standard || ''}${d.standard ? '形' : ''}</small></div><span>★</span></div>`;
             }).join('') || '<p style="text-align:center;color:#9ca3af">なし</p>';
         }
         function addToHistory(d) { history = history.filter(h => !(h.standard === d.standard && h.type === d.type && h.diameter === d.diameter)); history.unshift(d); if (history.length > 20) history.pop(); localStorage.setItem('p_his', JSON.stringify(history)); renderHistory(); }
         function renderHistory() {
             elements.histList.innerHTML = history.map(d => {
-                const dia = String(d.diameter).includes('x') ? d.diameter : `φ${d.diameter}`;
-                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${d.type} ${dia}</b><br><small>${d.standard || ''}${d.standard ? '形' : ''}</small></div><span>›</span></div>`;
+                return `<div class="list-entry" onclick='selectFromList(${JSON.stringify(d)})'><div><b>${getDisplayName(d)}</b><br><small>${d.standard || ''}${d.standard ? '形' : ''}</small></div><span>›</span></div>`;
             }).join('') || '<p style="text-align:center;color:#9ca3af">なし</p>';
         }
 
