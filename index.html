@@ -1327,7 +1327,11 @@
             updateStar();
             addToHistory(data);
         }
-        window.selectFromList = d => { switchMainTab('search'); elements.sInput.value = d.type + ' φ' + d.diameter; selectItem(d); };
+        window.selectFromList = d => {
+            switchMainTab('search');
+            elements.sInput.value = getDisplayName(d);
+            selectItem(d);
+        };
         function updateStar() { const isF = favorites.some(f => f.standard === currentData.standard && f.type === currentData.type && f.diameter === currentData.diameter); document.getElementById('btnStar').className = isF ? 'btn-star active' : 'btn-star'; document.getElementById('btnStar').textContent = isF ? '★' : '☆'; }
         window.toggleFavorite = () => { const idx = favorites.findIndex(f => f.standard === currentData.standard && f.type === currentData.type && f.diameter === currentData.diameter); if (idx >= 0) favorites.splice(idx, 1); else favorites.push(currentData); localStorage.setItem('p_fav', JSON.stringify(favorites)); updateStar(); renderFavorites(); };
         function renderFavorites() {
